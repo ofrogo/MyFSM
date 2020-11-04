@@ -1,0 +1,12 @@
+{
+  "start": "q0",
+  "finish": "q0",
+  "inputs": {
+    "char": ["p", "u", "b", "l", "i", "c", "r", "o", "t", "e", "d", "v", "a"]
+  },
+  "matrix": {
+    "q0": {
+      "char": "q0"
+    }
+  }
+}
