@@ -28,10 +28,14 @@ public class FiniteStateMachineDeserializer extends StdDeserializer<FiniteStateM
         ObjectMapper objectMapper = new ObjectMapper();
         String start = treeNode.get("start").asText();
         String finish = treeNode.get("finish").asText();
-        Map<String, List<String>> inputs = objectMapper.readValue(treeNode.get("inputs").toString(), new TypeReference<Map<String, List<String>>>() {
-        });
+        int rank = treeNode.get("rank").asInt();
+        Map<String, List<String>> inputs = null;
+        if(treeNode.has("inputs")) {
+            inputs = objectMapper.readValue(treeNode.get("inputs").toString(), new TypeReference<Map<String, List<String>>>() {
+            });
+        }
         Map<String, Map<String, String>> matrix = objectMapper.readValue(treeNode.get("matrix").toString(), new TypeReference<Map<String, Map<String, String>>>() {
         });
-        return new FiniteStateMachine(start, finish, inputs, matrix);
+        return new FiniteStateMachine(rank, start, finish, inputs, matrix);
     }
 }
