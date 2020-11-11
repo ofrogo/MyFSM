@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LexerHelper {
-    private static  List<Path> lexers;
+    private static List<Path> lexers;
 
     static {
         try {
@@ -21,7 +21,7 @@ public class LexerHelper {
         }
     }
 
-    public static String analyze(String str) throws IOException {
+    public static Map.Entry<String, String> analyze(String str, int skip) throws IOException {
         String resultLexer = "";
         String resultClass = "";
         int resultRank = 999;
@@ -30,14 +30,15 @@ public class LexerHelper {
             if (!Files.isDirectory(lexer)) {
                 FiniteStateMachine[] lexerFsmList = mapper.readValue(Files.readString(lexer), FiniteStateMachine[].class);
                 for (FiniteStateMachine lexerFsm : lexerFsmList) {
-                    Map.Entry<Boolean, Integer> check = lexerFsm.check(str, 0);
-                    if (check.getKey() && check.getValue().equals(str.length())) {
-                        if (resultLexer.length() < str.length()) {
-                            resultLexer = str;
+                    Map.Entry<Boolean, Integer> check = lexerFsm.check(str, skip);
+                    if (check.getKey()) {
+                        String newLexer = str.substring(skip, skip + check.getValue());
+                        if (resultLexer.length() < newLexer.length()) {
+                            resultLexer = newLexer;
                             resultRank = lexerFsm.getRank();
                             resultClass = lexer.toFile().getName().split("\\.")[0];
-                        } else if (resultLexer.length() == str.length() && resultRank > lexerFsm.getRank()){
-                            resultLexer = str;
+                        } else if (resultLexer.length() == newLexer.length() && resultRank > lexerFsm.getRank()) {
+                            resultLexer = newLexer;
                             resultRank = lexerFsm.getRank();
                             resultClass = lexer.toFile().getName().split("\\.")[0];
                         }
@@ -46,7 +47,10 @@ public class LexerHelper {
 
             }
         }
-        return resultClass;
+        return Map.entry(resultLexer, resultClass);
+    }
 
+    public static String analyzeForTesting(String str) throws IOException {
+        return analyze(str, 0).getValue();
     }
 }

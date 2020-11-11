@@ -68,18 +68,15 @@ public class FiniteStateMachine {
     }
 
     public Map.Entry<Boolean, Integer> check(String s, int skip) {
-        List<String> chars = s.substring(skip).chars()
-                .mapToObj(value -> String.valueOf(Character.toChars(value)))
-                .collect(Collectors.toList());
-
         String stage = start;
         int counter = 0;
         boolean isCorrect = false;
-        //String oldStage = start;
-        for (String chr : chars) {
-            //oldStage = stage;
-            stage = nextStage(stage, chr);
+        String oldStage;
+        for (int i = skip; i < s.length(); i++) {
+            oldStage = stage;
+            stage = nextStage(stage, String.valueOf(s.charAt(i)));
             if (stage == null) {
+                stage = oldStage;
                 break;
             }
             counter++;
