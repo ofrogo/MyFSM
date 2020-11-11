@@ -19,14 +19,7 @@ public class Main {
                     "  }\n" +
                     "  a = a / 15.0;\n" +
                     "}";
-            List<Map.Entry<String, String>> result = new ArrayList<>();
-            int i = 0;
-            while (i < lexerJava.length()) {
-                //System.out.println("char #" + i);
-                Map.Entry<String, String> analyzeResult = LexerHelper.analyze(lexerJava, i);
-                i += analyzeResult.getKey().length();
-                result.add(analyzeResult);
-            }
+            List<Map.Entry<String, String>> result = LexerHelper.analyzeAll(lexerJava);
             result.forEach(ss -> System.out.println("< " + (ss.getKey().trim().isEmpty() ? "\\s" : ss.getKey()) + " :: " + ss.getValue() + " >"));
         } catch (IOException e) {
             e.printStackTrace();

@@ -5,8 +5,31 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 class FiniteStateMachineTest {
+
+    @Test
+    public void testAnalyzeAll() throws IOException {
+        List<Map.Entry<String, String>> analyzeAll = LexerHelper.analyzeAll("int a = 10;");
+        Assertions.assertEquals("type", analyzeAll.get(0).getValue());
+        Assertions.assertEquals("int", analyzeAll.get(0).getKey());
+        Assertions.assertEquals("whitespace", analyzeAll.get(1).getValue());
+        Assertions.assertEquals(" ", analyzeAll.get(1).getKey());
+        Assertions.assertEquals("id", analyzeAll.get(2).getValue());
+        Assertions.assertEquals("a", analyzeAll.get(2).getKey());
+        Assertions.assertEquals("whitespace", analyzeAll.get(3).getValue());
+        Assertions.assertEquals(" ", analyzeAll.get(3).getKey());
+        Assertions.assertEquals("operator", analyzeAll.get(4).getValue());
+        Assertions.assertEquals("=", analyzeAll.get(4).getKey());
+        Assertions.assertEquals("whitespace", analyzeAll.get(5).getValue());
+        Assertions.assertEquals(" ", analyzeAll.get(5).getKey());
+        Assertions.assertEquals("number", analyzeAll.get(6).getValue());
+        Assertions.assertEquals("10", analyzeAll.get(6).getKey());
+        Assertions.assertEquals("spec", analyzeAll.get(7).getValue());
+        Assertions.assertEquals(";", analyzeAll.get(7).getKey());
+    }
 
     @Test
     public void testBool() throws IOException {

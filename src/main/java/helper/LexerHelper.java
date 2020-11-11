@@ -6,6 +6,7 @@ import entity.FiniteStateMachine;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,6 +49,17 @@ public class LexerHelper {
             }
         }
         return Map.entry(resultLexer, resultClass);
+    }
+
+    public static List<Map.Entry<String, String>> analyzeAll(String str) throws IOException {
+        List<Map.Entry<String, String>> result = new ArrayList<>();
+        int i = 0;
+        while (i < str.length()) {
+            Map.Entry<String, String> analyzeResult = analyze(str, i);
+            i += analyzeResult.getKey().length();
+            result.add(analyzeResult);
+        }
+        return result;
     }
 
     public static String analyzeForTesting(String str) throws IOException {
